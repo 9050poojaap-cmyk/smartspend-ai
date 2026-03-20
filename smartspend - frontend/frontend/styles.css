@@ -1,0 +1,263 @@
+:root{
+  /* Default: DARK theme */
+  --bg: #0b1220;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+
+  /* Glass surfaces */
+  --card: rgba(15, 23, 42, 0.72);
+  --cardSolid: #0f172a;
+  --border: rgba(229, 231, 235, 0.12);
+  --borderStrong: rgba(96, 165, 250, 0.35);
+
+  /* Accent palette */
+  --primary: #60a5fa;
+  --primary2: #3b82f6;
+  --success: #34d399;
+  --danger: #fb7185;
+  --warning: #fbbf24;
+
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  --shadowSoft: 0 12px 28px rgba(0, 0, 0, 0.25);
+
+  /* Inputs */
+  --inputBg: rgba(255, 255, 255, 0.03);
+  --inputBgFocus: rgba(96, 165, 250, 0.08);
+  --ring: rgba(96, 165, 250, 0.38);
+
+  --navBg: rgba(11, 18, 32, 0.62);
+}
+
+body[data-theme="light"]{
+  --bg: #f6f8fb;
+  --text: #0f172a;
+  --muted: #64748b;
+
+  --card: rgba(255, 255, 255, 0.72);
+  --cardSolid: #ffffff;
+  --border: rgba(15, 23, 42, 0.10);
+  --borderStrong: rgba(59, 130, 246, 0.25);
+
+  --primary: #3b82f6;
+  --primary2: #2563eb;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  --shadow: 0 20px 50px rgba(2, 6, 23, 0.12);
+  --shadowSoft: 0 12px 28px rgba(2, 6, 23, 0.09);
+
+  --inputBg: rgba(2, 6, 23, 0.03);
+  --inputBgFocus: rgba(59, 130, 246, 0.08);
+  --ring: rgba(59, 130, 246, 0.35);
+
+  --navBg: rgba(246, 248, 251, 0.72);
+}
+
+*{ box-sizing: border-box; }
+body{
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background:
+    radial-gradient(1000px circle at 10% 5%, rgba(96, 165, 250, 0.20), transparent 55%),
+    radial-gradient(900px circle at 90% 20%, rgba(52, 211, 153, 0.14), transparent 55%),
+    linear-gradient(180deg, var(--bg), var(--bg));
+  color: var(--text);
+  transition: background 220ms ease, color 220ms ease;
+  min-height: 100vh;
+}
+
+a{ color: inherit; text-decoration: none; }
+
+.container{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.grid{
+  display: grid;
+  gap: 16px;
+}
+
+.grid-3{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px){
+  .grid-3{ grid-template-columns: 1fr; }
+}
+
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadowSoft);
+  padding: 16px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.card h3{
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.big{
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+button{
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 600;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease, filter 180ms ease;
+}
+
+button.primary{
+  background: linear-gradient(135deg, var(--primary2), var(--primary));
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 14px 30px rgba(59, 130, 246, 0.25);
+}
+
+button.danger{
+  background: linear-gradient(135deg, var(--danger), #fb7185);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 14px 30px rgba(251, 113, 133, 0.18);
+}
+
+button:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--borderStrong);
+}
+
+button.primary:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+button.danger:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+input, select, textarea{
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--inputBg);
+  color: var(--text);
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+input:focus, select:focus, textarea:focus{
+  border-color: var(--borderStrong);
+  box-shadow: 0 0 0 4px var(--ring);
+  background: var(--inputBgFocus);
+}
+
+::placeholder{
+  color: rgba(156, 163, 175, 0.75);
+}
+
+body[data-theme="light"] ::placeholder{
+  color: rgba(100, 116, 139, 0.9);
+}
+
+label{
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.section-title{
+  font-size: 16px;
+  margin: 20px 0 10px;
+  font-weight: 900;
+}
+
+.navbar{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(10px);
+  background: var(--navBg);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 999px;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.pill:hover{
+  background: rgba(96, 165, 250, 0.07);
+  border-color: var(--borderStrong);
+}
+
+.muted{ color: var(--muted); }
+
+.chart-wrap{
+  height: 280px;
+  padding: 16px;
+}
+
+/* Make Chart.js canvases respect container sizing */
+.chart-wrap canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 700px){
+  .container{
+    padding: 18px 12px;
+  }
+  .grid-3{
+    grid-template-columns: 1fr;
+  }
+}
+
