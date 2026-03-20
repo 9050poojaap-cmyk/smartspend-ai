@@ -13,7 +13,7 @@ function AppInner() {
   const { logout, loading, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
 
   useEffect(() => {
     document.body.setAttribute("data-theme", theme);
