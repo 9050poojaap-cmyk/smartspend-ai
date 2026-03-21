@@ -153,6 +153,17 @@ export default function DashboardPage() {
   const totals = data.summary;
   const savings = totals.savings;
 
+  //New pdf updation
+  function formatCurrencyPDF(n) {
+    return (
+      "Rs. " +
+      Number(n || 0).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
+  }
+
   function exportMonthlyPDF() {
     if (!data) return;
     const doc = new jsPDF();
@@ -162,12 +173,19 @@ export default function DashboardPage() {
     doc.text(`Monthly Summary`, 14, 24);
     doc.text(`Month: ${month}`, 14, 30);
 
-    doc.text(`Total Income: ${formatCurrency(totals.totalIncome)}`, 14, 38);
-    doc.text(`Total Expenses: ${formatCurrency(totals.totalExpenses)}`, 14, 46);
-    doc.text(`Savings: ${formatCurrency(totals.savings)}`, 14, 54);
+    doc.text(`Total Income: ${formatCurrencyPDF(totals.totalIncome)}`, 14, 38);
+    doc.text(
+      `Total Expenses: ${formatCurrencyPDF(totals.totalExpenses)}`,
+      14,
+      46,
+    );
+    doc.text(`Savings: ${formatCurrencyPDF(totals.savings)}`, 14, 54);
 
     const topCats = data.insights.topCategories || [];
-    const tableBody = topCats.map((c) => [c.category, formatCurrency(c.total)]);
+    const tableBody = topCats.map((c) => [
+      c.category,
+      formatCurrencyPDF(c.total),
+    ]);
 
     autoTable(doc, {
       head: [["Top Category", "Total"]],
