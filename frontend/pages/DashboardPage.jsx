@@ -1,15 +1,37 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import api from "../services/api";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+} from "chart.js";
 import { Pie, Line, Bar } from "react-chartjs-2";
 import { AuthContext } from "../context/AuthContext";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+);
 
 function formatCurrency(n) {
-  return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format(n || 0);
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(n || 0);
 }
 
 function monthKey(d) {
@@ -30,7 +52,9 @@ export default function DashboardPage() {
       setLoading(true);
       setError("");
       try {
-        const res = await api.get(`/api/analytics/summary?month=${encodeURIComponent(month)}`);
+        const res = await api.get(
+          `/api/analytics/summary?month=${encodeURIComponent(month)}`,
+        );
         setData(res.data);
       } catch (err) {
         setError(err?.response?.data?.message || "Failed to load analytics");
@@ -49,7 +73,15 @@ export default function DashboardPage() {
         {
           label: "Expenses by category",
           data: data.charts.categoryPie.values,
-          backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#14b8a6", "#f97316"],
+          backgroundColor: [
+            "#3b82f6",
+            "#10b981",
+            "#f59e0b",
+            "#ef4444",
+            "#8b5cf6",
+            "#14b8a6",
+            "#f97316",
+          ],
         },
       ],
     };
@@ -109,7 +141,9 @@ export default function DashboardPage() {
     return (
       <div className="container">
         <div className="card" style={{ borderColor: "rgba(239,68,68,0.35)" }}>
-          <div className="section-title" style={{ marginTop: 0 }}>Error</div>
+          <div className="section-title" style={{ marginTop: 0 }}>
+            Error
+          </div>
           <div style={{ color: "var(--danger)", fontWeight: 800 }}>{error}</div>
         </div>
       </div>
@@ -151,17 +185,30 @@ export default function DashboardPage() {
     <div className="container">
       <div className="row" style={{ marginBottom: 14 }}>
         <div>
-          <div className="section-title" style={{ marginTop: 0 }}>Dashboard</div>
-          <div className="muted" style={{ fontWeight: 700 }}>AI insights for {month}</div>
+          <div className="section-title" style={{ marginTop: 0 }}>
+            Dashboard
+          </div>
+          <div className="muted" style={{ fontWeight: 700 }}>
+            AI insights for {month}
+          </div>
         </div>
 
         <div style={{ minWidth: 190 }}>
           <label>Month</label>
-          <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+          <input
+            type="month"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+          />
         </div>
 
         <div style={{ display: "flex", alignItems: "flex-end" }}>
-          <button className="primary" type="button" onClick={exportMonthlyPDF} disabled={!data}>
+          <button
+            className="primary"
+            type="button"
+            onClick={exportMonthlyPDF}
+            disabled={!data}
+          >
             Export PDF
           </button>
         </div>
@@ -174,11 +221,16 @@ export default function DashboardPage() {
         </div>
         <div className="card">
           <h3>Total Expenses</h3>
-          <div className="big" style={{ color: "var(--danger)" }}>{formatCurrency(totals.totalExpenses)}</div>
+          <div className="big" style={{ color: "var(--danger)" }}>
+            {formatCurrency(totals.totalExpenses)}
+          </div>
         </div>
         <div className="card">
           <h3>Savings</h3>
-          <div className="big" style={{ color: savings >= 0 ? "var(--success)" : "var(--danger)" }}>
+          <div
+            className="big"
+            style={{ color: savings >= 0 ? "var(--success)" : "var(--danger)" }}
+          >
             {formatCurrency(savings)}
           </div>
         </div>
@@ -209,9 +261,15 @@ export default function DashboardPage() {
           {data.insights.topCategories?.length ? (
             <div style={{ display: "grid", gap: 10 }}>
               {data.insights.topCategories.map((c) => (
-                <div key={c.category} className="row" style={{ justifyContent: "space-between" }}>
+                <div
+                  key={c.category}
+                  className="row"
+                  style={{ justifyContent: "space-between" }}
+                >
                   <div style={{ fontWeight: 900 }}>{c.category}</div>
-                  <div style={{ fontWeight: 900 }}>{formatCurrency(c.total)}</div>
+                  <div style={{ fontWeight: 900 }}>
+                    {formatCurrency(c.total)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -231,12 +289,24 @@ export default function DashboardPage() {
             Based on your recent savings trend.
           </div>
 
-          <div style={{ marginTop: 12, borderTop: "1px solid var(--border)", paddingTop: 12 }}>
-            <div className="muted" style={{ fontWeight: 900, fontSize: 12 }}>Month comparison</div>
+          <div
+            style={{
+              marginTop: 12,
+              borderTop: "1px solid var(--border)",
+              paddingTop: 12,
+            }}
+          >
+            <div className="muted" style={{ fontWeight: 900, fontSize: 12 }}>
+              Month comparison
+            </div>
             <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>
-              Expenses: {Math.round(data.insights.monthComparison.expenseChangePercent)}% vs previous
+              Expenses:{" "}
+              {Math.round(data.insights.monthComparison.expenseChangePercent)}%
+              vs previous
               <br />
-              Savings: {Math.round(data.insights.monthComparison.savingsChangePercent)}% vs previous
+              Savings:{" "}
+              {Math.round(data.insights.monthComparison.savingsChangePercent)}%
+              vs previous
             </div>
           </div>
         </div>
@@ -245,10 +315,23 @@ export default function DashboardPage() {
           {data.insights.anomalies?.length ? (
             <div style={{ display: "grid", gap: 10 }}>
               {data.insights.anomalies.map((a, idx) => (
-                <div key={idx} style={{ border: "1px solid var(--border)", padding: 10, borderRadius: 12 }}>
-                  <div style={{ fontWeight: 900 }}>{formatCurrency(a.amount)}</div>
-                  <div className="muted" style={{ fontWeight: 800 }}>{a.category}</div>
-                  <div className="muted" style={{ fontSize: 12 }}>{a.message}</div>
+                <div
+                  key={idx}
+                  style={{
+                    border: "1px solid var(--border)",
+                    padding: 10,
+                    borderRadius: 12,
+                  }}
+                >
+                  <div style={{ fontWeight: 900 }}>
+                    {formatCurrency(a.amount)}
+                  </div>
+                  <div className="muted" style={{ fontWeight: 800 }}>
+                    {a.category}
+                  </div>
+                  <div className="muted" style={{ fontSize: 12 }}>
+                    {a.message}
+                  </div>
                 </div>
               ))}
             </div>
@@ -263,22 +346,35 @@ export default function DashboardPage() {
         {data.insights.smartSuggestions?.length ? (
           <div style={{ display: "grid", gap: 8 }}>
             {data.insights.smartSuggestions.map((s, idx) => (
-              <div key={idx} className="pill" style={{ justifyContent: "space-between" }}>
+              <div
+                key={idx}
+                className="pill"
+                style={{ justifyContent: "space-between" }}
+              >
                 <span style={{ fontWeight: 900 }}>{s}</span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="muted">Keep going. Add transactions to get tailored insights.</div>
+          <div className="muted">
+            Keep going. Add transactions to get tailored insights.
+          </div>
         )}
       </div>
 
       {data.budgetsAlerts?.length ? (
-        <div className="card" style={{ marginTop: 16, borderColor: "rgba(245,158,11,0.35)" }}>
+        <div
+          className="card"
+          style={{ marginTop: 16, borderColor: "rgba(245,158,11,0.35)" }}
+        >
           <h3>Budget Alerts</h3>
           <div style={{ display: "grid", gap: 10 }}>
             {data.budgetsAlerts.map((b) => (
-              <div key={b.category} className="row" style={{ justifyContent: "space-between" }}>
+              <div
+                key={b.category}
+                className="row"
+                style={{ justifyContent: "space-between" }}
+              >
                 <div style={{ fontWeight: 900 }}>{b.category}</div>
                 <div style={{ fontWeight: 900, color: "var(--warning)" }}>
                   Spent {formatCurrency(b.spent)} / {formatCurrency(b.limit)}
@@ -291,4 +387,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
